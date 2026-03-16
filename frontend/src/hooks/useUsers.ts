@@ -34,8 +34,27 @@ export const useUsers = () => {
     }
   };
 
-  const deleteUser = (id: number | string) => {
-    setUsers((prev) => prev.filter((user) => user.id.toString() !== id.toString()));
+  const deleteUser = async (id: number | string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/users/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to delete user');
+      }
+
+      setUsers((prev) => prev.filter((user) => user.id.toString() !== id.toString()));
+      return true;
+    } catch (err: any) {
+      setError(err.message);
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {

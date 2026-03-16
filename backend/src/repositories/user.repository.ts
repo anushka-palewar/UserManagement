@@ -20,4 +20,12 @@ export class UserRepository {
     const users = rows as User[];
     return users.length > 0 ? users[0] : null;
   }
+
+  async delete(id: number): Promise<boolean> {
+    const [result] = await pool.execute<ResultSetHeader>(
+      'DELETE FROM users WHERE id = ?',
+      [id]
+    );
+    return result.affectedRows > 0;
+  }
 }

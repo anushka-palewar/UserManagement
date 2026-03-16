@@ -204,3 +204,24 @@ th {
 tr:hover {
   background: var(--code-bg);
 }
+
+.delete-button {
+  padding: 0.5rem 1rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-button:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.delete-button:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}

@@ -3,7 +3,7 @@ import { UserItem } from '../UserItem/UserItem';
 
 interface UserListProps {
   users: User[];
-  onDelete: (id: string) => void;
+  onDelete: (id: number | string) => void;
 }
 
 export const UserList = ({ users, onDelete }: UserListProps) => {

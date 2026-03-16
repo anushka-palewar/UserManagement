@@ -2,7 +2,7 @@ import type { User } from '../../types/user';
 
 interface UserItemProps {
   user: User;
-  onDelete: (id: string) => void;
+  onDelete: (id: number | string) => void;
 }
 
 export const UserItem = ({ user, onDelete }: UserItemProps) => {

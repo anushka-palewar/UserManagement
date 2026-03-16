@@ -109,3 +109,98 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* User Form Styles */
+.user-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.user-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.user-form button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.user-form button:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  background: rgba(255, 0, 0, 0.05);
+  color: #dc2626;
+}
+
+/* User List Table Styles */
+table {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  border-collapse: collapse;
+  background: var(--bg);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+tr:hover {
+  background: var(--code-bg);
+}

@@ -3,22 +3,46 @@ import type { User } from '../types/user';
 
 export const useUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const addUser = (userData: Omit<User, 'id'>) => {
-    const newUser: User = {
-      ...userData,
-      id: crypto.randomUUID(),
-    };
-    setUsers((prev) => [...prev, newUser]);
+  const addUser = async (userData: Omit<User, 'id'>) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to add user');
+      }
+
+      const newUser = await response.json();
+      setUsers((prev) => [...prev, newUser]);
+      return true;
+    } catch (err: any) {
+      setError(err.message);
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteUser = (id: string) => {
-    setUsers((prev) => prev.filter((user) => user.id !== id));
+  const deleteUser = (id: number | string) => {
+    setUsers((prev) => prev.filter((user) => user.id.toString() !== id.toString()));
   };
 
   return {
     users,
     addUser,
     deleteUser,
+    loading,
+    apiError: error,
   };
 };

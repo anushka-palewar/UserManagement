@@ -2,53 +2,58 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import type { UserFormData } from '../../types/user';
 import { validateEmail, validateAge } from '../../utils/validation';
 
-interface UserFormProps {
-  onAddUser: (user: { name: string; email: string; age: number }) => void;
+  interface UserFormProps {
+  onAddUser: (user: { name: string; email: string; age: number }) => Promise<boolean>;
+  loading?: boolean;
+  apiError?: string | null;
 }
 
-export const UserForm = ({ onAddUser }: UserFormProps) => {
+export const UserForm = ({ onAddUser, loading, apiError }: UserFormProps) => {
   const [formData, setFormData] = useState<UserFormData>({
     name: '',
     email: '',
     age: '',
   });
-  const [error, setError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setValidationError(null);
 
     const { name, email, age } = formData;
 
     if (!name.trim()) {
-      setError('Name is required');
+      setValidationError('Name is required');
       return;
     }
 
     if (!validateEmail(email)) {
-      setError('Invalid email address');
+      setValidationError('Invalid email address');
       return;
     }
 
     const ageNumber = parseInt(age, 10);
     if (isNaN(ageNumber) || !validateAge(ageNumber)) {
-      setError('Age must be a valid number between 1 and 149');
+      setValidationError('Age must be a valid number between 1 and 149');
       return;
     }
 
-    onAddUser({ name: name.trim(), email: email.trim(), age: ageNumber });
-    setFormData({ name: '', email: '', age: '' });
+    const success = await onAddUser({ name: name.trim(), email: email.trim(), age: ageNumber });
+    if (success) {
+      setFormData({ name: '', email: '', age: '' });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <div>
+    <form onSubmit={handleSubmit} className="user-form">
+      {validationError && <p className="error validation-error">{validationError}</p>}
+      {apiError && <p className="error api-error">{apiError}</p>}
+      <div className="form-group">
         <label htmlFor="name">Name:</label>
         <input
           type="text"
@@ -56,9 +61,11 @@ export const UserForm = ({ onAddUser }: UserFormProps) => {
           name="name"
           value={formData.name}
           onChange={handleChange}
+          disabled={loading}
+          placeholder="Enter full name"
         />
       </div>
-      <div>
+      <div className="form-group">
         <label htmlFor="email">Email:</label>
         <input
           type="email"
@@ -66,9 +73,11 @@ export const UserForm = ({ onAddUser }: UserFormProps) => {
           name="email"
           value={formData.email}
           onChange={handleChange}
+          disabled={loading}
+          placeholder="example@email.com"
         />
       </div>
-      <div>
+      <div className="form-group">
         <label htmlFor="age">Age:</label>
         <input
           type="number"
@@ -76,9 +85,13 @@ export const UserForm = ({ onAddUser }: UserFormProps) => {
           name="age"
           value={formData.age}
           onChange={handleChange}
+          disabled={loading}
+          placeholder="Enter age"
         />
       </div>
-      <button type="submit">Add User</button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Adding User...' : 'Add User'}
+      </button>
     </form>
   );
 };

@@ -44,4 +44,27 @@ export class UserController {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  update = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id as string, 10);
+      const { name, email, age } = req.body;
+
+      if (isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+      }
+
+      const updatedUser = await this.userService.updateUser(id, { name, email, age: Number(age) });
+      res.status(200).json(updatedUser);
+    } catch (error: any) {
+      if (error.message === 'User with this email already exists') {
+        return res.status(409).json({ message: error.message });
+      }
+      if (error.message === 'User not found or no changes made') {
+        return res.status(404).json({ message: error.message });
+      }
+      console.error('Error updating user:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 }

@@ -1,19 +1,35 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import type { UserFormData } from '../../types/user';
+import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
+import type { User, UserFormData } from '../../types/user';
 import { validateEmail, validateAge } from '../../utils/validation';
 
   interface UserFormProps {
   onAddUser: (user: { name: string; email: string; age: number }) => Promise<boolean>;
+  onUpdateUser?: (id: number | string, user: { name: string; email: string; age: number }) => Promise<boolean>;
+  onCancel?: () => void;
+  initialData?: User | null;
   loading?: boolean;
   apiError?: string | null;
 }
 
-export const UserForm = ({ onAddUser, loading, apiError }: UserFormProps) => {
+export const UserForm = ({ onAddUser, onUpdateUser, onCancel, initialData, loading, apiError }: UserFormProps) => {
   const [formData, setFormData] = useState<UserFormData>({
-    name: '',
-    email: '',
-    age: '',
+    name: initialData?.name || '',
+    email: initialData?.email || '',
+    age: initialData?.age.toString() || '',
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        email: initialData.email,
+        age: initialData.age.toString(),
+      });
+    } else {
+      setFormData({ name: '', email: '', age: '' });
+    }
+  }, [initialData]);
+
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,9 +59,18 @@ export const UserForm = ({ onAddUser, loading, apiError }: UserFormProps) => {
       return;
     }
 
-    const success = await onAddUser({ name: name.trim(), email: email.trim(), age: ageNumber });
+    const preparedData = { name: name.trim(), email: email.trim(), age: ageNumber };
+    
+    let success = false;
+    if (initialData && onUpdateUser) {
+      success = await onUpdateUser(initialData.id, preparedData);
+    } else {
+      success = await onAddUser(preparedData);
+    }
+
     if (success) {
       setFormData({ name: '', email: '', age: '' });
+      if (onCancel) onCancel();
     }
   };
 
@@ -89,9 +114,16 @@ export const UserForm = ({ onAddUser, loading, apiError }: UserFormProps) => {
           placeholder="Enter age"
         />
       </div>
-      <button type="submit" disabled={loading}>
-        {loading ? 'Adding User...' : 'Add User'}
-      </button>
+      <div className="button-group">
+        <button type="submit" disabled={loading}>
+          {loading ? (initialData ? 'Updating...' : 'Adding...') : (initialData ? 'Update User' : 'Add User')}
+        </button>
+        {initialData && (
+          <button type="button" onClick={onCancel} className="cancel-button" disabled={loading}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

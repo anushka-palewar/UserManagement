@@ -60,6 +60,33 @@ export const useUsers = () => {
   return {
     users,
     addUser,
+    updateUser: async (id: number | string, userData: Partial<User>) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`/api/users/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.message || 'Failed to update user');
+        }
+
+        const updatedUser = await response.json();
+        setUsers((prev) => prev.map((user) => user.id.toString() === id.toString() ? updatedUser : user));
+        return true;
+      } catch (err: any) {
+        setError(err.message);
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    },
     deleteUser,
     loading,
     apiError: error,

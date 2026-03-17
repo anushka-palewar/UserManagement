@@ -225,3 +225,49 @@ tr:hover {
   background: var(--border);
   cursor: not-allowed;
 }
+
+.edit-button {
+  padding: 0.5rem 1rem;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 8px;
+}
+
+.edit-button:hover:not(:disabled) {
+  background: var(--accent);
+  color: white;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-form .button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.cancel-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--code-bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel-button:hover {
+  background: var(--border);
+}

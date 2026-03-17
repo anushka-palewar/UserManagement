@@ -3,10 +3,11 @@ import type { User } from '../../types/user';
 
 interface UserItemProps {
   user: User;
+  onEdit: (user: User) => void;
   onDelete: (id: number | string) => Promise<boolean>;
 }
 
-export const UserItem = ({ user, onDelete }: UserItemProps) => {
+export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -22,7 +23,13 @@ export const UserItem = ({ user, onDelete }: UserItemProps) => {
       <td>{user.name}</td>
       <td>{user.email}</td>
       <td>{user.age}</td>
-      <td>
+      <td className="actions-cell">
+        <button 
+          onClick={() => onEdit(user)}
+          className="edit-button"
+        >
+          Edit
+        </button>
         <button 
           onClick={handleDelete} 
           disabled={isDeleting}

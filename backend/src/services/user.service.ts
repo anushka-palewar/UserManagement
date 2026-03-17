@@ -29,4 +29,22 @@ export class UserService {
       throw new Error('User not found');
     }
   }
+
+  async updateUser(id: number, userData: Partial<User>): Promise<User> {
+    // Check if user exists
+    const existingUser = await this.userRepository.findByEmail(userData.email || '');
+    if (existingUser && existingUser.id !== id) {
+      throw new Error('User with this email already exists');
+    }
+
+    const success = await this.userRepository.update(id, userData);
+    if (!success) {
+      throw new Error('User not found or no changes made');
+    }
+
+    return {
+      ...userData,
+      id
+    } as User;
+  }
 }

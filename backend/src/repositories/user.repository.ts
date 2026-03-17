@@ -28,4 +28,13 @@ export class UserRepository {
     );
     return result.affectedRows > 0;
   }
+
+  async update(id: number, user: Partial<User>): Promise<boolean> {
+    const { name, email, age } = user;
+    const [result] = await pool.execute<ResultSetHeader>(
+      'UPDATE users SET name = ?, email = ?, age = ? WHERE id = ?',
+      [name, email, age, id]
+    );
+    return result.affectedRows > 0;
+  }
 }

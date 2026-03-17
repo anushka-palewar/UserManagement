@@ -1,12 +1,13 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
-import type { User, UserFormData } from '../../types/user';
+import { User, Mail, Calendar, UserPlus, Check, AlertCircle } from 'lucide-react';
+import type { User as UserType, UserFormData } from '../../types/user';
 import { validateEmail, validateAge } from '../../utils/validation';
 
-  interface UserFormProps {
+interface UserFormProps {
   onAddUser: (user: { name: string; email: string; age: number }) => Promise<boolean>;
   onUpdateUser?: (id: number | string, user: { name: string; email: string; age: number }) => Promise<boolean>;
   onCancel?: () => void;
-  initialData?: User | null;
+  initialData?: UserType | null;
   loading?: boolean;
   apiError?: string | null;
 }
@@ -44,18 +45,18 @@ export const UserForm = ({ onAddUser, onUpdateUser, onCancel, initialData, loadi
     const { name, email, age } = formData;
 
     if (!name.trim()) {
-      setValidationError('Name is required');
+      setValidationError('Full Name is required');
       return;
     }
 
     if (!validateEmail(email)) {
-      setValidationError('Invalid email address');
+      setValidationError('Please enter a valid email address');
       return;
     }
 
     const ageNumber = parseInt(age, 10);
     if (isNaN(ageNumber) || !validateAge(ageNumber)) {
-      setValidationError('Age must be a valid number between 1 and 149');
+      setValidationError('Age must be between 1 and 149');
       return;
     }
 
@@ -75,55 +76,84 @@ export const UserForm = ({ onAddUser, onUpdateUser, onCancel, initialData, loadi
   };
 
   return (
-    <form onSubmit={handleSubmit} className="user-form">
-      {validationError && <p className="error validation-error">{validationError}</p>}
-      {apiError && <p className="error api-error">{apiError}</p>}
-      <div className="form-group">
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          disabled={loading}
-          placeholder="Enter full name"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          disabled={loading}
-          placeholder="example@email.com"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="age">Age:</label>
-        <input
-          type="number"
-          id="age"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          disabled={loading}
-          placeholder="Enter age"
-        />
-      </div>
-      <div className="button-group">
-        <button type="submit" disabled={loading}>
-          {loading ? (initialData ? 'Updating...' : 'Adding...') : (initialData ? 'Update User' : 'Add User')}
-        </button>
-        {initialData && (
-          <button type="button" onClick={onCancel} className="cancel-button" disabled={loading}>
-            Cancel
-          </button>
+    <div className="card view-transition">
+      <form onSubmit={handleSubmit} className="user-form">
+        { (validationError || apiError) && (
+          <div className="error" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <AlertCircle size={18} />
+            {validationError || apiError}
+          </div>
         )}
-      </div>
-    </form>
+
+        <div className="form-group">
+          <label htmlFor="name">
+            <User size={16} /> Full Name
+          </label>
+          <div className="input-wrapper">
+            <User size={18} className="input-icon" />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="e.g. John Doe"
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="email">
+            <Mail size={16} /> Email Address
+          </label>
+          <div className="input-wrapper">
+            <Mail size={18} className="input-icon" />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="e.g. john@example.com"
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="age">
+            <Calendar size={16} /> Age
+          </label>
+          <div className="input-wrapper">
+            <Calendar size={18} className="input-icon" />
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              placeholder="e.g. 25"
+            />
+          </div>
+        </div>
+
+        <div className="button-group">
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? (
+              'Processing...'
+            ) : (
+              <>
+                {initialData ? <Check size={20} /> : <UserPlus size={20} />}
+                {initialData ? 'Update User' : 'Add User'}
+              </>
+            )}
+          </button>
+          {initialData && (
+            <button type="button" onClick={onCancel} className="btn-cancel" disabled={loading}>
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 };

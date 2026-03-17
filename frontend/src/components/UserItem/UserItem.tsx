@@ -1,41 +1,40 @@
-import { useState } from 'react';
+import { Edit2, Trash2 } from 'lucide-react';
 import type { User } from '../../types/user';
 
 interface UserItemProps {
   user: User;
   onEdit: (user: User) => void;
-  onDelete: (id: number | string) => Promise<boolean>;
+  onDelete: (id: number | string) => void;
 }
 
 export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleDelete = async () => {
-    if (window.confirm(`Are you sure you want to delete ${user.name}?`)) {
-      setIsDeleting(true);
-      await onDelete(user.id);
-      setIsDeleting(false);
-    }
-  };
-
   return (
     <tr>
-      <td>{user.name}</td>
-      <td>{user.email}</td>
-      <td>{user.age}</td>
+      <td>
+        <span style={{ fontWeight: 600 }}>{user.name}</span>
+      </td>
+      <td style={{ color: 'var(--text-secondary)' }}>{user.email}</td>
+      <td>
+        <span className="counter" style={{ background: 'var(--bg)', padding: '4px 10px', borderRadius: '8px', fontSize: '0.85rem' }}>
+          {user.age}
+        </span>
+      </td>
       <td className="actions-cell">
         <button 
           onClick={() => onEdit(user)}
-          className="edit-button"
+          className="btn-action-edit"
+          title="Edit User"
         >
+          <Edit2 size={16} />
           Edit
         </button>
         <button 
-          onClick={handleDelete} 
-          disabled={isDeleting}
-          className="delete-button"
+          onClick={() => onDelete(user.id)} 
+          className="btn-action-delete"
+          title="Delete User"
         >
-          {isDeleting ? 'Deleting...' : 'Delete'}
+          <Trash2 size={16} />
+          Delete
         </button>
       </td>
     </tr>

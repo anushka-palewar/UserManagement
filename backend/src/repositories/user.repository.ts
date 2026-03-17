@@ -5,7 +5,7 @@ import { ResultSetHeader } from 'mysql2';
 export class UserRepository {
   async create(user: User): Promise<number | undefined> {
     const { name, email, age } = user;
-    const [result] = await pool.execute<ResultSetHeader>(
+    const [result] = await (pool as any).execute(
       'INSERT INTO users (name, email, age) VALUES (?, ?, ?)',
       [name, email, age]
     );
@@ -13,7 +13,7 @@ export class UserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const [rows] = await pool.execute(
+    const [rows] = await (pool as any).execute(
       'SELECT * FROM users WHERE email = ?',
       [email]
     );
@@ -22,7 +22,7 @@ export class UserRepository {
   }
 
   async delete(id: number): Promise<boolean> {
-    const [result] = await pool.execute<ResultSetHeader>(
+    const [result] = await (pool as any).execute(
       'DELETE FROM users WHERE id = ?',
       [id]
     );
@@ -31,10 +31,17 @@ export class UserRepository {
 
   async update(id: number, user: Partial<User>): Promise<boolean> {
     const { name, email, age } = user;
-    const [result] = await pool.execute<ResultSetHeader>(
+    const [result] = await (pool as any).execute(
       'UPDATE users SET name = ?, email = ?, age = ? WHERE id = ?',
       [name, email, age, id]
     );
     return result.affectedRows > 0;
+  }
+
+  async findAll(): Promise<User[]> {
+    const [rows] = await (pool as any).execute(
+      'SELECT * FROM users ORDER BY created_at DESC'
+    );
+    return rows as User[];
   }
 }

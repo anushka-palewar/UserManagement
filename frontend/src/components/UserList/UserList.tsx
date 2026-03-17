@@ -6,9 +6,22 @@ interface UserListProps {
   users: User[];
   onEdit: (user: User) => void;
   onDelete: (id: number | string) => void;
+  loading?: boolean;
 }
 
-export const UserList = ({ users, onEdit, onDelete }: UserListProps) => {
+export const UserList = ({ users, onEdit, onDelete, loading }: UserListProps) => {
+  if (loading && users.length === 0) {
+    return (
+      <div className="card view-transition">
+        <div className="empty-state">
+          <div className="skeleton-loader" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <p>Loading users...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (users.length === 0) {
     return (
       <div className="card view-transition">

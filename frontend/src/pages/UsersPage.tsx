@@ -102,7 +102,7 @@ export const UsersPage = () => {
 
       {currentView === 'list' && (
         <div className="view-transition">
-          <UserList users={users} onEdit={handleEdit} onDelete={(id) => {
+          <UserList users={users} loading={loading} onEdit={handleEdit} onDelete={(id) => {
             const user = users.find(u => u.id === id);
             if (user) openDeleteModal(user);
             return Promise.resolve(true); 

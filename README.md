@@ -1,131 +1,174 @@
-# UserHub - Modern User Management System
+# User Management System
 
-UserHub is a sleek, high-performance MERN stack application designed for seamless user management. It features a modern, responsive UI with smooth animations and a robust backend architecture.
+This is a full-stack User Management application built using React, TypeScript, Node.js, Express, and MySQL.  
+It allows users to perform basic operations such as adding, viewing, updating, and deleting user data.
 
-## 🚀 Tech Stack
+---
+
+## Tech Stack
 
 ### Frontend
-- **React 19** & **TypeScript**
-- **Vite** (Optimized Build Tool)
-- **Framer Motion** (Subtle Animations)
-- **Lucide React** (Modern Iconography)
-- **Vanilla CSS** (Custom Design System with CSS Variables)
+- React
+- TypeScript
+- Vite
 
 ### Backend
-- **Node.js** & **Express.js**
-- **TypeScript** (Strongly Typed API)
-- **MySQL** (Relational Database)
-- **mysql2** (Database Driver)
+- Node.js
+- Express
+- TypeScript
+
+### Database
+- MySQL
 
 ---
 
-## ✨ Features
+## Features
 
-- **✅ Add User**: Create new user profiles with real-time feedback.
-- **📋 View Users**: Dynamic dashboard to browse your user directory.
-- **✏️ Update User**: Intuitive editing interface for existing records.
-- **🗑️ Delete User**: Secure removal with interactive confirmation modals.
-- **🛡️ Form Validation**: Comprehensive data verification for both frontend and backend.
-
----
-
-## 🏗️ Project Structure
-
-```text
-root
- ├── frontend   # React + Vite client application
- └── backend    # Node.js + Express API service
-```
+- Add new user
+- View all users
+- Update user details
+- Delete user
+- Form validation
 
 ---
 
-## 🛠️ Setup Instructions
+## Project Structure
+
+
+UserManagement
+│
+├── backend
+│ ├── database
+│ │ └── schema.sql
+│ │
+│ ├── src
+│ │ ├── config
+│ │ ├── controllers
+│ │ ├── models
+│ │ ├── repositories
+│ │ ├── routes
+│ │ ├── services
+│ │ └── index.ts
+│ │
+│ ├── .env
+│ ├── package.json
+│ └── tsconfig.json
+│
+├── frontend
+│ ├── public
+│ ├── src
+│ │ ├── assets
+│ │ ├── components
+│ │ ├── hooks
+│ │ ├── pages
+│ │ ├── types
+│ │ ├── utils
+│ │ ├── App.tsx
+│ │ └── main.tsx
+│ │
+│ ├── index.html
+│ ├── package.json
+│ └── vite.config.ts
+│
+├── screenshots
+│ ├── ui1.png
+│ └── ui2.png
+│
+├── .gitignore
+├── package.json
+└── README.md
+
+
+---
+
+## Setup Instructions
 
 ### 1. Clone the Repository
-```bash
+
+
 git clone https://github.com/anushka-palewar/UserManagement
-```
 
-### 2. Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev
-```
+cd UserManagement
 
-### 3. Backend Setup
-```bash
+
+---
+
+### 2. Backend Setup
+
+
 cd backend
 npm install
 npm run dev
-```
+
 
 ---
 
-## 🔑 Environment Variables
+### 3. Frontend Setup
 
-The backend requires a `.env` file with the following variables:
+Open a new terminal:
 
-```env
+
+cd frontend
+npm install
+npm run dev
+
+
+---
+
+## Environment Variables
+
+Create a `.env` file inside the backend folder:
+
+
 PORT=5000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=user_management
-```
+DB_NAME=usermanagement
+
 
 ---
 
-## 🔌 API Endpoints
+## Database Setup
+
+Run the SQL file located at:
+
+
+backend/database/schema.sql
+
+
+This will create the required database and users table.
+
+---
+
+## API Endpoints
 
 | Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| **POST** | `/users` | Create a new user |
-| **GET** | `/users` | Retrieve all users |
-| **PUT** | `/users/:id` | Update an existing user |
-| **DELETE** | `/users/:id` | Delete a specific user |
+|--------|---------|------------|
+| POST   | /users       | Add user |
+| GET    | /users       | Get all users |
+| PUT    | /users/:id   | Update user |
+| DELETE | /users/:id   | Delete user |
 
 ---
 
-## 🖼️ Screenshots
+## Screenshots
 
-### Dashboard Overview
-![App UI](./screenshots/ui1.png)
-![App UI](./screenshots/ui2.png)
-
----
-
-## 📊 Architecture
-
-### System Flow
-```mermaid
-graph LR
-    A[Frontend: React/Vite] -- API Calls --> B[Backend: Node/Express]
-    B -- Queries --> C[Database: MySQL]
-```
-
-### User Interaction Sequence
-```mermaid
-sequenceDiagram
-    participant User
-    participant Frontend
-    participant Backend
-    participant Database
-
-    User->>Frontend: Fill Form & Submit
-    Frontend->>Backend: POST /users (JSON Data)
-    Backend->>Backend: Validate Input
-    Backend->>Database: INSERT INTO users ...
-    Database-->>Backend: OK / Success
-    Backend-->>Frontend: 201 Created
-    Frontend->>User: Show Success Toast & Refresh List
-```
+![UI](./screenshots/ui1.png)  
+![UI](./screenshots/ui2.png)
 
 ---
 
-## 📝 Notes
+## Flow
 
-- Uses **Inter** as the primary typeface for a clean look.
-- Implements **Glassmorphism** and **Glow Effects** for a premium feel.
-- Fully responsive design optimized for mobile and desktop.
-- Developed with **Markdown Best Practices** for high readability on GitHub.
+
+Frontend → Backend → Database → Backend → Frontend
+
+
+---
+
+## Notes
+
+- Backend follows route → controller → service → repository structure.
+- Frontend is divided into components, hooks, and pages.
+- Data is stored in MySQL and fetched through APIs.

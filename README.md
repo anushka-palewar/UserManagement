@@ -1,169 +1,119 @@
-# User Management System
+# 👋 User Management System
 
-This is a full-stack User Management application built using React, TypeScript, Node.js, Express, and MySQL.  
-It allows users to add, view, update, and delete user data.
+![Project Banner](./screenshots/banner.png)
 
----
+A simple, fast, and professional app to manage user records. Built to practice core full-stack development using modern tools like React, TypeScript, and Express.
 
-## Tech Stack
+## Project Description
 
-### Frontend
-- React
-- TypeScript
-- Vite
-
-### Backend
-- Node.js
-- Express
-- TypeScript
-
-### Database
-- MySQL
+This project is a complete User Management system. It lets you create, view, edit, and delete user profiles easily. I built it to learn how to connect React components to a real database (MySQL) using a Node.js API with strict TypeScript types for both.
 
 ---
 
-## Features
+## 🛠️ Tech Stack
 
-- Add new user  
-- View all users  
-- Update user details  
-- Delete user  
-- Form validation  
-
----
-
-## Project Structure
-
-
-UserManagement
-│
-├── backend
-│ ├── database
-│ │ └── schema.sql
-│ │
-│ ├── src
-│ │ ├── config
-│ │ ├── controllers
-│ │ ├── models
-│ │ ├── repositories
-│ │ ├── routes
-│ │ ├── services
-│ │ └── index.ts
-│ │
-│ ├── .env
-│ ├── package.json
-│ └── tsconfig.json
-│
-├── frontend
-│ ├── public
-│ ├── src
-│ │ ├── assets
-│ │ ├── components
-│ │ ├── hooks
-│ │ ├── pages
-│ │ ├── types
-│ │ ├── utils
-│ │ ├── App.tsx
-│ │ └── main.tsx
-│ │
-│ ├── index.html
-│ ├── package.json
-│ └── vite.config.ts
-│
-├── screenshots
-│ ├── ui1.png
-│ └── ui2.png
-│
-├── .gitignore
-├── package.json
-└── README.md
-
+- **Frontend:** React + TypeScript + Vite
+- **Backend:** Node.js + Express + TypeScript
+- **Database:** MySQL
+- **Styling:** CSS (Custom)
 
 ---
 
-## Setup Instructions
+## ✨ Features
 
-### 1. Clone Repository
-
-
-git clone https://github.com/anushka-palewar/UserManagement
-
-cd UserManagement
-
+- **Add Users:** Create new user entries with name, email, and age.
+- **View Users:** A clean list of all current users fetched directly from the DB.
+- **Update Records:** Edit any existing user information instantly.
+- **Delete Users:** Remove records with a single click.
+- **Full-stack Flow:** Seamless communication between client, server, and database.
 
 ---
+
+## 📁 Folder Structure
+
+```text
+UserManagement/
+├── frontend/             # React App
+│   ├── src/
+│   │   ├── components/   # UI bits (Button, Form, Table)
+│   │   ├── hooks/        # Custom logic for API calls
+│   │   ├── pages/        # Main views (UserList, UserForm)
+│   │   └── types/        # TS interfaces
+├── backend/              # Node.js Express Server
+│   ├── src/
+│   │   ├── config/       # DB connection & init
+│   │   ├── controllers/  # Route handlers
+│   │   ├── services/     # Business logic
+│   │   └── index.ts      # Server entry point
+├── screenshots/          # App previews & banner
+└── README.md             # This file
+```
+
+---
+
+## 🚀 Setup & Running
+
+### 1. Database Setup
+Make sure you have **MySQL** installed. Use a tool like MySQL Workbench or the command line to run the schema file:
+```bash
+mysql -u root -p < backend/database/schema.sql
+```
 
 ### 2. Backend Setup
-
-
-cd backend
-npm install
-npm run dev
-
-
----
+1. Go to the `backend` folder.
+2. Create a `.env` file and add your database credentials:
+   ```env
+   PORT=5000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=your_password
+   DB_NAME=usermanagement
+   ```
+3. Run:
+   ```bash
+   npm install
+   npm run dev
+   ```
 
 ### 3. Frontend Setup
-
-Open a new terminal:
-
-
-cd frontend
-npm install
-npm run dev
-
-
----
-
-## Environment Variables
-
-Create `.env` inside backend:
-
-
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=usermanagement
-
+1. Go to the `frontend` folder.
+2. Run:
+   ```bash
+   npm install
+   npm run dev
+   ```
+3. Open `http://localhost:5173` in your browser.
 
 ---
 
-## Database Setup
+## 🔗 API Endpoints
 
-Run:
-
-
-backend/database/schema.sql
-
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|---------|------------|
-| POST   | /users       | Add user |
-| GET    | /users       | Get all users |
-| PUT    | /users/:id   | Update user |
-| DELETE | /users/:id   | Delete user |
+| Method | Endpoint | Task |
+| :--- | :--- | :--- |
+| `GET` | `/api/users` | List all users |
+| `POST` | `/api/users` | Create a new user |
+| `PUT` | `/api/users/:id` | Update user by ID |
+| `DELETE` | `/api/users/:id` | Delete user by ID |
 
 ---
 
-## Screenshots
+## 📊 System Flow
 
-![UI](./screenshots/ui1.png)  
-![UI](./screenshots/ui2.png)
-
----
-
-## Flow
+The diagram below shows how data moves from your clicks in the browser to the actual database records.
 
 ```mermaid
-graph LR
-A[Frontend] --> B[Backend]
-B --> C[Database]
-Notes
-Backend follows route → controller → service → repository structure
-Frontend is divided into components, hooks, and pages
-Data is stored in MySQL and fetched using APIs
+graph TD
+    User([User In Dashboard]) -->|Interacts| UI[React Frontend]
+    UI -->|API Request| API[Express API Server]
+    API -->|Query| DB[(MySQL Database)]
+    DB -->|Result| API
+    API -->|Response| UI
+    UI -->|Update View| User
+```
+
+---
+
+## 📸 Screenshots
+
+![User List Screen](./screenshots/ui1.png)
+![Add User Form](./screenshots/ui2.png)

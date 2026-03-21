@@ -1,7 +1,7 @@
 # User Management System
 
 This is a full-stack User Management application built using React, TypeScript, Node.js, Express, and MySQL.  
-It allows users to perform basic operations such as adding, viewing, updating, and deleting user data.
+It allows users to add, view, update, and delete user data.
 
 ---
 
@@ -24,11 +24,11 @@ It allows users to perform basic operations such as adding, viewing, updating, a
 
 ## Features
 
-- Add new user
-- View all users
-- Update user details
-- Delete user
-- Form validation
+- Add new user  
+- View all users  
+- Update user details  
+- Delete user  
+- Form validation  
 
 ---
 
@@ -83,7 +83,7 @@ UserManagement
 
 ## Setup Instructions
 
-### 1. Clone the Repository
+### 1. Clone Repository
 
 
 git clone https://github.com/anushka-palewar/UserManagement
@@ -117,7 +117,7 @@ npm run dev
 
 ## Environment Variables
 
-Create a `.env` file inside the backend folder:
+Create `.env` inside backend:
 
 
 PORT=5000
@@ -131,13 +131,11 @@ DB_NAME=usermanagement
 
 ## Database Setup
 
-Run the SQL file located at:
+Run:
 
 
 backend/database/schema.sql
 
-
-This will create the required database and users table.
 
 ---
 
@@ -161,14 +159,11 @@ This will create the required database and users table.
 
 ## Flow
 
-
-Frontend → Backend → Database → Backend → Frontend
-
-
----
-
-## Notes
-
-- Backend follows route → controller → service → repository structure.
-- Frontend is divided into components, hooks, and pages.
-- Data is stored in MySQL and fetched through APIs.
+```mermaid
+graph LR
+A[Frontend] --> B[Backend]
+B --> C[Database]
+Notes
+Backend follows route → controller → service → repository structure
+Frontend is divided into components, hooks, and pages
+Data is stored in MySQL and fetched using APIs
